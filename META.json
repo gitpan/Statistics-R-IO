@@ -1,0 +1,97 @@
+{
+   "abstract" : "Perl interface to serialized R data",
+   "author" : [
+      "Davor Cubranic <cubranic@stat.ubc.ca>"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "Module::Build version 0.4205",
+   "license" : [
+      "gpl_3"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Statistics-R-IO",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Test::Fatal" : "0",
+            "Test::More" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Carp" : "0",
+            "Moo" : "0",
+            "namespace::clean" : "0"
+         }
+      }
+   },
+   "provides" : {
+      "Statistics::R::IO" : {
+         "file" : "lib/Statistics/R/IO.pm",
+         "version" : "0.01"
+      },
+      "Statistics::R::IO::Parser" : {
+         "file" : "lib/Statistics/R/IO/Parser.pm"
+      },
+      "Statistics::R::IO::ParserState" : {
+         "file" : "lib/Statistics/R/IO/ParserState.pm"
+      },
+      "Statistics::R::IO::REXPFactory" : {
+         "file" : "lib/Statistics/R/IO/REXPFactory.pm"
+      },
+      "Statistics::R::REXP" : {
+         "file" : "lib/Statistics/R/REXP.pm"
+      },
+      "Statistics::R::REXP::Character" : {
+         "file" : "lib/Statistics/R/REXP/Character.pm"
+      },
+      "Statistics::R::REXP::Double" : {
+         "file" : "lib/Statistics/R/REXP/Double.pm"
+      },
+      "Statistics::R::REXP::Environment" : {
+         "file" : "lib/Statistics/R/REXP/Environment.pm"
+      },
+      "Statistics::R::REXP::GlobalEnvironment" : {
+         "file" : "lib/Statistics/R/REXP/GlobalEnvironment.pm"
+      },
+      "Statistics::R::REXP::Integer" : {
+         "file" : "lib/Statistics/R/REXP/Integer.pm"
+      },
+      "Statistics::R::REXP::Language" : {
+         "file" : "lib/Statistics/R/REXP/Language.pm"
+      },
+      "Statistics::R::REXP::List" : {
+         "file" : "lib/Statistics/R/REXP/List.pm"
+      },
+      "Statistics::R::REXP::Logical" : {
+         "file" : "lib/Statistics/R/REXP/Logical.pm"
+      },
+      "Statistics::R::REXP::Null" : {
+         "file" : "lib/Statistics/R/REXP/Null.pm"
+      },
+      "Statistics::R::REXP::Raw" : {
+         "file" : "lib/Statistics/R/REXP/Raw.pm"
+      },
+      "Statistics::R::REXP::Symbol" : {
+         "file" : "lib/Statistics/R/REXP/Symbol.pm"
+      },
+      "Statistics::R::REXP::Vector" : {
+         "file" : "lib/Statistics/R/REXP/Vector.pm"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://www.gnu.org/licenses/gpl-3.0.txt"
+      ]
+   },
+   "version" : "0.01"
+}

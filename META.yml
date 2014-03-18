@@ -1,0 +1,75 @@
+---
+abstract: 'Perl interface to serialized R data'
+author:
+  - 'Davor Cubranic <cubranic@stat.ubc.ca>'
+build_requires:
+  Test::Fatal: 0
+  Test::More: 0
+configure_requires:
+  Module::Build: 0
+dynamic_config: 1
+generated_by: 'Module::Build version 0.4205, CPAN::Meta::Converter version 2.120921'
+license: gpl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Statistics-R-IO
+provides:
+  Statistics::R::IO:
+    file: lib/Statistics/R/IO.pm
+    version: 0.01
+  Statistics::R::IO::Parser:
+    file: lib/Statistics/R/IO/Parser.pm
+    version: 0
+  Statistics::R::IO::ParserState:
+    file: lib/Statistics/R/IO/ParserState.pm
+    version: 0
+  Statistics::R::IO::REXPFactory:
+    file: lib/Statistics/R/IO/REXPFactory.pm
+    version: 0
+  Statistics::R::REXP:
+    file: lib/Statistics/R/REXP.pm
+    version: 0
+  Statistics::R::REXP::Character:
+    file: lib/Statistics/R/REXP/Character.pm
+    version: 0
+  Statistics::R::REXP::Double:
+    file: lib/Statistics/R/REXP/Double.pm
+    version: 0
+  Statistics::R::REXP::Environment:
+    file: lib/Statistics/R/REXP/Environment.pm
+    version: 0
+  Statistics::R::REXP::GlobalEnvironment:
+    file: lib/Statistics/R/REXP/GlobalEnvironment.pm
+    version: 0
+  Statistics::R::REXP::Integer:
+    file: lib/Statistics/R/REXP/Integer.pm
+    version: 0
+  Statistics::R::REXP::Language:
+    file: lib/Statistics/R/REXP/Language.pm
+    version: 0
+  Statistics::R::REXP::List:
+    file: lib/Statistics/R/REXP/List.pm
+    version: 0
+  Statistics::R::REXP::Logical:
+    file: lib/Statistics/R/REXP/Logical.pm
+    version: 0
+  Statistics::R::REXP::Null:
+    file: lib/Statistics/R/REXP/Null.pm
+    version: 0
+  Statistics::R::REXP::Raw:
+    file: lib/Statistics/R/REXP/Raw.pm
+    version: 0
+  Statistics::R::REXP::Symbol:
+    file: lib/Statistics/R/REXP/Symbol.pm
+    version: 0
+  Statistics::R::REXP::Vector:
+    file: lib/Statistics/R/REXP/Vector.pm
+    version: 0
+requires:
+  Carp: 0
+  Moo: 0
+  namespace::clean: 0
+resources:
+  license: http://www.gnu.org/licenses/gpl-3.0.txt
+version: 0.01
