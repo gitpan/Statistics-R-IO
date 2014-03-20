@@ -4,9 +4,9 @@
       "Davor Cubranic <cubranic@stat.ubc.ca>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4205",
+   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921",
    "license" : [
-      "gpl_3"
+      "open_source"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
@@ -22,69 +22,87 @@
       },
       "configure" : {
          "requires" : {
-            "Module::Build" : "0"
+            "Module::Build" : "0",
+            "Software::License" : "0"
          }
       },
       "runtime" : {
          "requires" : {
             "Carp" : "0",
             "Moo" : "0",
-            "namespace::clean" : "0"
+            "namespace::clean" : "0",
+            "perl" : "5.012"
          }
       }
    },
    "provides" : {
       "Statistics::R::IO" : {
          "file" : "lib/Statistics/R/IO.pm",
-         "version" : "0.01"
+         "version" : "0.02"
       },
       "Statistics::R::IO::Parser" : {
-         "file" : "lib/Statistics/R/IO/Parser.pm"
+         "file" : "lib/Statistics/R/IO/Parser.pm",
+         "version" : 0
       },
       "Statistics::R::IO::ParserState" : {
-         "file" : "lib/Statistics/R/IO/ParserState.pm"
+         "file" : "lib/Statistics/R/IO/ParserState.pm",
+         "version" : 0
       },
       "Statistics::R::IO::REXPFactory" : {
-         "file" : "lib/Statistics/R/IO/REXPFactory.pm"
+         "file" : "lib/Statistics/R/IO/REXPFactory.pm",
+         "version" : 0
       },
       "Statistics::R::REXP" : {
-         "file" : "lib/Statistics/R/REXP.pm"
+         "file" : "lib/Statistics/R/REXP.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::Character" : {
-         "file" : "lib/Statistics/R/REXP/Character.pm"
+         "file" : "lib/Statistics/R/REXP/Character.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::Double" : {
-         "file" : "lib/Statistics/R/REXP/Double.pm"
+         "file" : "lib/Statistics/R/REXP/Double.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::Environment" : {
-         "file" : "lib/Statistics/R/REXP/Environment.pm"
+         "file" : "lib/Statistics/R/REXP/Environment.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::GlobalEnvironment" : {
-         "file" : "lib/Statistics/R/REXP/GlobalEnvironment.pm"
+         "file" : "lib/Statistics/R/REXP/GlobalEnvironment.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::Integer" : {
-         "file" : "lib/Statistics/R/REXP/Integer.pm"
+         "file" : "lib/Statistics/R/REXP/Integer.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::Language" : {
-         "file" : "lib/Statistics/R/REXP/Language.pm"
+         "file" : "lib/Statistics/R/REXP/Language.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::List" : {
-         "file" : "lib/Statistics/R/REXP/List.pm"
+         "file" : "lib/Statistics/R/REXP/List.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::Logical" : {
-         "file" : "lib/Statistics/R/REXP/Logical.pm"
+         "file" : "lib/Statistics/R/REXP/Logical.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::Null" : {
-         "file" : "lib/Statistics/R/REXP/Null.pm"
+         "file" : "lib/Statistics/R/REXP/Null.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::Raw" : {
-         "file" : "lib/Statistics/R/REXP/Raw.pm"
+         "file" : "lib/Statistics/R/REXP/Raw.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::Symbol" : {
-         "file" : "lib/Statistics/R/REXP/Symbol.pm"
+         "file" : "lib/Statistics/R/REXP/Symbol.pm",
+         "version" : 0
       },
       "Statistics::R::REXP::Vector" : {
-         "file" : "lib/Statistics/R/REXP/Vector.pm"
+         "file" : "lib/Statistics/R/REXP/Vector.pm",
+         "version" : 0
       }
    },
    "release_status" : "stable",
@@ -93,5 +111,5 @@
          "http://www.gnu.org/licenses/gpl-3.0.txt"
       ]
    },
-   "version" : "0.01"
+   "version" : "0.02"
 }

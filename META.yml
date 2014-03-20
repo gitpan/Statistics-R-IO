@@ -7,9 +7,10 @@ build_requires:
   Test::More: 0
 configure_requires:
   Module::Build: 0
+  Software::License: 0
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4205, CPAN::Meta::Converter version 2.120921'
-license: gpl
+generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
+license: open_source
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
@@ -17,7 +18,7 @@ name: Statistics-R-IO
 provides:
   Statistics::R::IO:
     file: lib/Statistics/R/IO.pm
-    version: 0.01
+    version: 0.02
   Statistics::R::IO::Parser:
     file: lib/Statistics/R/IO/Parser.pm
     version: 0
@@ -70,6 +71,7 @@ requires:
   Carp: 0
   Moo: 0
   namespace::clean: 0
+  perl: 5.012
 resources:
   license: http://www.gnu.org/licenses/gpl-3.0.txt
-version: 0.01
+version: 0.02

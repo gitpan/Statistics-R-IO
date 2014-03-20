@@ -263,10 +263,10 @@ sub vector_and_attributes {
 
     bind(seq(@parsers),
          sub {
-             return unless $_[0];
-             my %args = (elements => (shift($_[0]) || []));
+             my @args = @{shift or return};
+             my %args = (elements => (shift(@args) || []));
              if ($object_info->{has_attributes}) {
-                 $args{attributes} = { tagged_pairlist_to_attribute_hash(shift $_[0]) };
+                 $args{attributes} = { tagged_pairlist_to_attribute_hash(shift @args) };
              }
              mreturn($rexp_class->new(%args))
          })
@@ -430,7 +430,7 @@ Statistics::R::IO::REXPFactory - Functions for parsing R data files
 
 =head1 VERSION
 
-This documentation refers to version 0.01 of the module.
+This documentation refers to version 0.02 of the module.
 
 
 =head1 SYNOPSIS
