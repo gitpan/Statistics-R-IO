@@ -38,7 +38,7 @@
    "provides" : {
       "Statistics::R::IO" : {
          "file" : "lib/Statistics/R/IO.pm",
-         "version" : "0.02"
+         "version" : "0.03"
       },
       "Statistics::R::IO::Parser" : {
          "file" : "lib/Statistics/R/IO/Parser.pm",
@@ -46,6 +46,14 @@
       },
       "Statistics::R::IO::ParserState" : {
          "file" : "lib/Statistics/R/IO/ParserState.pm",
+         "version" : 0
+      },
+      "Statistics::R::IO::RDS" : {
+         "file" : "lib/Statistics/R/IO/RDS.pm",
+         "version" : 0
+      },
+      "Statistics::R::IO::RData" : {
+         "file" : "lib/Statistics/R/IO/RData.pm",
          "version" : 0
       },
       "Statistics::R::IO::REXPFactory" : {
@@ -111,5 +119,5 @@
          "http://www.gnu.org/licenses/gpl-3.0.txt"
       ]
    },
-   "version" : "0.02"
+   "version" : "0.03"
 }
