@@ -3,17 +3,18 @@ require 5.012;
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
-  'EXE_FILES' => [],
-  'VERSION_FROM' => 'lib/Statistics/R/IO.pm',
+  'PL_FILES' => {},
   'NAME' => 'Statistics::R::IO',
+  'INSTALLDIRS' => 'site',
+  'VERSION_FROM' => 'lib/Statistics/R/IO.pm',
+  'EXE_FILES' => [],
   'PREREQ_PM' => {
+                   'Test::MockObject' => 0,
+                   'namespace::clean' => 0,
                    'Test::More' => 0,
                    'Carp' => 0,
-                   'Test::Fatal' => 0,
-                   'namespace::clean' => 0,
-                   'Moo' => 0
-                 },
-  'PL_FILES' => {},
-  'INSTALLDIRS' => 'site'
+                   'Moo' => 0,
+                   'Test::Fatal' => 0
+                 }
 )
 ;

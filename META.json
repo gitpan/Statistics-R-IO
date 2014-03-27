@@ -4,7 +4,7 @@
       "Davor Cubranic <cubranic@stat.ubc.ca>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.140640",
    "license" : [
       "open_source"
    ],
@@ -17,6 +17,7 @@
       "build" : {
          "requires" : {
             "Test::Fatal" : "0",
+            "Test::MockObject" : "0",
             "Test::More" : "0"
          }
       },
@@ -38,79 +39,67 @@
    "provides" : {
       "Statistics::R::IO" : {
          "file" : "lib/Statistics/R/IO.pm",
-         "version" : "0.03"
+         "version" : "0.04"
+      },
+      "Statistics::R::IO::Base" : {
+         "file" : "lib/Statistics/R/IO/Base.pm"
       },
       "Statistics::R::IO::Parser" : {
-         "file" : "lib/Statistics/R/IO/Parser.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/IO/Parser.pm"
       },
       "Statistics::R::IO::ParserState" : {
-         "file" : "lib/Statistics/R/IO/ParserState.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/IO/ParserState.pm"
       },
       "Statistics::R::IO::RDS" : {
-         "file" : "lib/Statistics/R/IO/RDS.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/IO/RDS.pm"
       },
       "Statistics::R::IO::RData" : {
-         "file" : "lib/Statistics/R/IO/RData.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/IO/RData.pm"
       },
       "Statistics::R::IO::REXPFactory" : {
-         "file" : "lib/Statistics/R/IO/REXPFactory.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/IO/REXPFactory.pm"
+      },
+      "Statistics::R::IO::Rserve" : {
+         "file" : "lib/Statistics/R/IO/Rserve.pm"
       },
       "Statistics::R::REXP" : {
-         "file" : "lib/Statistics/R/REXP.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP.pm"
       },
       "Statistics::R::REXP::Character" : {
-         "file" : "lib/Statistics/R/REXP/Character.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/Character.pm"
       },
       "Statistics::R::REXP::Double" : {
-         "file" : "lib/Statistics/R/REXP/Double.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/Double.pm"
       },
       "Statistics::R::REXP::Environment" : {
-         "file" : "lib/Statistics/R/REXP/Environment.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/Environment.pm"
       },
       "Statistics::R::REXP::GlobalEnvironment" : {
-         "file" : "lib/Statistics/R/REXP/GlobalEnvironment.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/GlobalEnvironment.pm"
       },
       "Statistics::R::REXP::Integer" : {
-         "file" : "lib/Statistics/R/REXP/Integer.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/Integer.pm"
       },
       "Statistics::R::REXP::Language" : {
-         "file" : "lib/Statistics/R/REXP/Language.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/Language.pm"
       },
       "Statistics::R::REXP::List" : {
-         "file" : "lib/Statistics/R/REXP/List.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/List.pm"
       },
       "Statistics::R::REXP::Logical" : {
-         "file" : "lib/Statistics/R/REXP/Logical.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/Logical.pm"
       },
       "Statistics::R::REXP::Null" : {
-         "file" : "lib/Statistics/R/REXP/Null.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/Null.pm"
       },
       "Statistics::R::REXP::Raw" : {
-         "file" : "lib/Statistics/R/REXP/Raw.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/Raw.pm"
       },
       "Statistics::R::REXP::Symbol" : {
-         "file" : "lib/Statistics/R/REXP/Symbol.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/Symbol.pm"
       },
       "Statistics::R::REXP::Vector" : {
-         "file" : "lib/Statistics/R/REXP/Vector.pm",
-         "version" : 0
+         "file" : "lib/Statistics/R/REXP/Vector.pm"
       }
    },
    "release_status" : "stable",
@@ -119,5 +108,5 @@
          "http://www.gnu.org/licenses/gpl-3.0.txt"
       ]
    },
-   "version" : "0.03"
+   "version" : "0.04"
 }

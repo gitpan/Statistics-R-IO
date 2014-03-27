@@ -3,68 +3,47 @@ use 5.012;
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More tests => 19;
+use IO::Socket::INET ();
+
+use Test::More;
+my $rserve = IO::Socket::INET->new(PeerAddr => 'localhost',
+                                   PeerPort => 6311);
+if ($rserve) {
+    plan tests => 15;
+    $rserve->sysread(my $response, 32);
+    die "Unrecognized server ID" unless
+        substr($response, 0, 12) eq 'Rsrv0103QAP1';
+}
+else {
+    plan skip_all => "Cannot connect to Rserve server at localhost:6311";
+}
 use Test::Fatal;
 
-use Statistics::R::IO::RDS;
+use Statistics::R::IO::Rserve;
 use Statistics::R::IO::REXPFactory;
+
+sub check_rserve_eval_variants {
+    my ($rexp, $expected, $message) = @_;
+
+    subtest 'rserve eval ' . $message => sub {
+        is(Statistics::R::IO::Rserve->new->eval($rexp),
+           $expected, $message . ' no arg constructor');
+        is(Statistics::R::IO::Rserve->new('localhost')->eval($rexp),
+           $expected, $message . ' localhost arg');
+        is(Statistics::R::IO::Rserve->new($rserve)->eval($rexp),
+           $expected, $message . ' handle arg');
+    }
+}
 
 
 ## integer vectors
-
-sub check_rds {
-    my ($file, $expected, $message) = @_;
-
-    subtest 'rds ' . $message => sub {
-        plan tests => 2;
-
-        ## test with filename
-        my $rds = Statistics::R::IO::RDS->new($file);
-        my $actual = $rds->read;
-        is($actual, $expected, $message);
-        $rds->close;
-
-        ## test with raw file handle
-        open my $fh, $file or die $!;
-        $rds = Statistics::R::IO::RDS->new({ fh => $fh });
-        $actual = $rds->read;
-        is($actual, $expected, $message);
-        $rds->close;
-    }
-}
-
-sub check_rds_variants {
-    my ($file, $expected, $message) = @_;
-
-    subtest 'variants ' . $message => sub {
-        plan tests => (-f "$file-noxdr" ? 5 : 4);
-
-        check_rds($file . '-xdr',
-                  $expected, $message . ' - xdr');
-
-        check_rds($file . '-noxdr',
-                  $expected, $message . ' - binary') if (-f "$file-noxdr");
-
-        check_rds($file . '-xdr.rds',
-                  $expected, $message . ' - compressed xdr');
-
-        check_rds($file . '-xdr_bzip.rds',
-                  $expected, $message . ' - bzip compressed xdr');
-        
-        like(exception {
-            Statistics::R::IO::RDS->new($file . '-xdr_xz.rds')->read
-             }, qr/xz-compressed R files are not supported/, $message . ' - xz');
-    }
-}
-
-
 ## serialize 1:3, XDR: true
-check_rds_variants('t/data/noatt-123l',
-     Statistics::R::REXP::Integer->new([ 1, 2, 3 ]),
-     'int vector no atts');
+check_rserve_eval_variants('1:3',
+   Statistics::R::REXP::Integer->new([ 1, 2, 3 ]),
+   'int vector no atts');
 
 ## serialize a=1L, b=2L, c=3L, XDR: true
-check_rds_variants('t/data/abc-123l',
+check_rserve_eval_variants('c(a=1L, b=2L, c=3L)',
    Statistics::R::REXP::Integer->new(
        elements => [ 1, 2, 3 ],
        attributes => {
@@ -75,12 +54,12 @@ check_rds_variants('t/data/abc-123l',
 
 ## double vectors
 ## serialize 1234.56, XDR: true
-check_rds_variants('t/data/noatt-123456',
+check_rserve_eval_variants('1234.56',
    Statistics::R::REXP::Double->new([ 1234.56 ]),
    'double vector no atts');
 
 ## serialize foo=1234.56, XDR: true
-check_rds_variants('t/data/foo-123456',
+check_rserve_eval_variants('c(foo=1234.56)',
    Statistics::R::REXP::Double->new(
        elements => [ 1234.56 ],
        attributes => {
@@ -91,12 +70,12 @@ check_rds_variants('t/data/foo-123456',
 
 ## character vectors
 ## serialize letters[1:3], XDR: true
-check_rds_variants('t/data/noatt-abc',
+check_rserve_eval_variants('letters[1:3]',
    Statistics::R::REXP::Character->new([ 'a', 'b', 'c' ]),
    'character vector no atts');
 
 ## serialize A='a', B='b', C='c', XDR: true
-check_rds_variants('t/data/ABC-abc',
+check_rserve_eval_variants('c(A="a", B="b", C="c")',
    Statistics::R::REXP::Character->new(
        elements => [ 'a', 'b', 'c' ],
        attributes => {
@@ -107,14 +86,14 @@ check_rds_variants('t/data/ABC-abc',
 
 ## raw vectors
 ## serialize as.raw(c(1:3, 255, 0), XDR: true
-check_rds_variants('t/data/noatt-raw',
+check_rserve_eval_variants('as.raw(c(1,2,3,255, 0))',
    Statistics::R::REXP::Raw->new([ 1, 2, 3, 255, 0 ]),
    'raw vector');
 
 
 ## list (i.e., generic vector)
 ## serialize list(1:3, list('a', 'b', 11), 'foo'), XDR: true
-check_rds_variants('t/data/noatt-list',
+check_rserve_eval_variants("list(1:3, list('a', 'b', 11), 'foo')",
    Statistics::R::REXP::List->new([
        Statistics::R::REXP::Integer->new([ 1, 2, 3]),
        Statistics::R::REXP::List->new([
@@ -125,7 +104,7 @@ check_rds_variants('t/data/noatt-list',
    'generic vector no atts');
 
 ## serialize list(foo=1:3, list('a', 'b', 11), bar='foo'), XDR: true
-check_rds_variants('t/data/foobar-list',
+check_rserve_eval_variants("list(foo=1:3, list('a', 'b', 11), bar='foo')",
    Statistics::R::REXP::List->new(
        elements => [
            Statistics::R::REXP::Integer->new([ 1, 2, 3]),
@@ -143,7 +122,7 @@ check_rds_variants('t/data/foobar-list',
 ## matrix
 
 ## serialize matrix(-1:4, 2, 3), XDR: true
-check_rds_variants('t/data/noatt-mat',
+check_rserve_eval_variants('matrix(-1:4, 2, 3)',
    Statistics::R::REXP::Integer->new(
        elements => [ -1, 0, 1, 2, 3, 4 ],
        attributes => {
@@ -152,7 +131,7 @@ check_rds_variants('t/data/noatt-mat',
    'int matrix no atts');
 
 ## serialize matrix(-1:4, 2, 3, dimnames=list(c('a', 'b'))), XDR: true
-check_rds_variants('t/data/ab-mat',
+check_rserve_eval_variants("matrix(-1:4, 2, 3, dimnames=list(c('a', 'b')))",
    Statistics::R::REXP::Integer->new(
        elements => [ -1, 0, 1, 2, 3, 4 ],
        attributes => {
@@ -167,7 +146,7 @@ check_rds_variants('t/data/ab-mat',
 
 ## data frames
 ## serialize head(cars)
-check_rds_variants('t/data/cars',
+check_rserve_eval_variants('head(cars)',
    Statistics::R::REXP::List->new(
        elements => [
            Statistics::R::REXP::Double->new([ 4, 4, 7, 7, 8, 9]),
@@ -183,7 +162,7 @@ check_rds_variants('t/data/cars',
    'the cars data frame');
 
 ## serialize head(mtcars)
-check_rds_variants('t/data/mtcars',
+check_rserve_eval_variants('head(mtcars)',
    Statistics::R::REXP::List->new(
        elements => [
            Statistics::R::REXP::Double->new([ 21.0, 21.0, 22.8, 21.4, 18.7, 18.1 ]),
@@ -211,7 +190,7 @@ check_rds_variants('t/data/mtcars',
    'the mtcars data frame');
 
 ## serialize head(iris)
-check_rds_variants('t/data/iris',
+check_rserve_eval_variants('head(iris)',
    Statistics::R::REXP::List->new(
        elements => [
            Statistics::R::REXP::Double->new([ 5.1, 4.9, 4.7, 4.6, 5.0, 5.4 ]),
@@ -238,7 +217,7 @@ check_rds_variants('t/data/iris',
    'the iris data frame');
 
 ## serialize lm(mpg ~ wt, data = head(mtcars))
-check_rds_variants('t/data/mtcars-lm-mpgwt',
+check_rserve_eval_variants('lm(mpg ~ wt, data = head(mtcars))',
    Statistics::R::REXP::List->new(
        elements => [
            # coefficients
@@ -458,20 +437,3 @@ check_rds_variants('t/data/mtcars-lm-mpgwt',
            ]),
            class => Statistics::R::REXP::Character->new(['lm']) }),
    'lm mpg~wt, head(mtcars)');
-
-
-## opening a non-existent file
-like(exception {
-    Statistics::R::IO::RDS->new('foobard')
-     }, qr/No such file 'foobard'/, 'new on non-existent file');
-
-## bad arguments to new
-like(exception {
-    Statistics::R::IO::RDS->new
-     }, qr/Missing required arguments: fh/, 'new with no args');
-like(exception {
-    Statistics::R::IO::RDS->new([])
-     }, qr/Single parameters to new/, 'new with array ref');
-like(exception {
-    Statistics::R::IO::RDS->new(fh => [])
-     }, qr/'fh' must be a file handle/, 'bad fh');
