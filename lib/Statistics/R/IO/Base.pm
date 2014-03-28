@@ -1,5 +1,6 @@
 package Statistics::R::IO::Base;
-
+# ABSTRACT: Common object methods for processing R files
+$Statistics::R::IO::Base::VERSION = '0.041';
 use 5.012;
 
 use IO::File;
@@ -7,7 +8,7 @@ use IO::Handle;
 
 use IO::Uncompress::Gunzip ();
 use IO::Uncompress::Bunzip2 ();
-
+use Scalar::Util qw(blessed);
 use Carp;
 
 use Moo::Role;
@@ -18,9 +19,10 @@ has fh => (
     is => 'ro',
     required => 1,
     isa => sub {
+        my $obj = shift;
         die "'fh' must be a file handle"
-            unless UNIVERSAL::isa($_[0], 'IO::Handle') ||
-            UNIVERSAL::isa($_[0], 'GLOB')
+            unless (blessed($obj) && $obj->isa('IO::Handle')) ||
+            UNIVERSAL::isa($obj, 'GLOB')
     }
 );
 
@@ -98,16 +100,17 @@ sub DEMOLISH {
 
 __END__
 
+=pod
+
+=encoding UTF-8
 
 =head1 NAME
 
 Statistics::R::IO::Base - Common object methods for processing R files
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -118,14 +121,12 @@ This documentation refers to version 0.04 of the module.
     my $var = $rds->read;
     $f->close;
 
-
 =head1 DESCRIPTION
 
 An object of this class represents a handle to an R-related file. This
 class cannot be directly instantiated (it's a L<Moo::Role>), because
 it is intended as a base abstract class with concrete subclasses to
 parse specific types of files, such as RDS or RData.
-
 
 =head1 METHODS
 
@@ -148,7 +149,6 @@ reference, specifying values of the object attributes (in this case,
 
 =back
 
-
 =head2 ACCESSORS
 
 =over
@@ -159,7 +159,6 @@ A file handle (stored as a reference to the L<IO::Handle>) to the data
 being parsed.
 
 =back
-
 
 =head2 METHODS
 
@@ -177,6 +176,7 @@ when the object is destroyed.
 
 =back
 
+=for Pod::Coverage BUILDARGS DEMOLISH
 
 =head1 BUGS AND LIMITATIONS
 
@@ -186,21 +186,20 @@ try to change their value or attributes.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

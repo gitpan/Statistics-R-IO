@@ -1,5 +1,6 @@
 package Statistics::R::REXP::List;
-
+# ABSTRACT: an R generic vector (list)
+$Statistics::R::REXP::List::VERSION = '0.041';
 use 5.012;
 
 use Scalar::Util qw(weaken);
@@ -26,15 +27,19 @@ sub _type { 'list'; }
 
 1; # End of Statistics::R::REXP::List
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
 =head1 NAME
 
 Statistics::R::REXP::List - an R generic vector (list)
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -45,20 +50,17 @@ This documentation refers to version 0.04 of the module.
     ]);
     print $vec->elements;
 
-
 =head1 DESCRIPTION
 
 An object of this class represents an R list, also called a generic
 vector (C<VECSXP>). List elements can themselves be lists, and so can
 form a tree structure.
 
-
 =head1 METHODS
 
 C<Statistics::R::REXP:List> inherits from
 L<Statistics::R::REXP::Vector>, with no added restrictions on the value
 of its elements. Missing values (C<NA> in R) have value C<undef>.
-
 
 =head1 BUGS AND LIMITATIONS
 
@@ -68,21 +70,20 @@ do not try to change their value or attributes.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

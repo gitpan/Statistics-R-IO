@@ -1,5 +1,6 @@
 package Statistics::R::REXP;
-
+# ABSTRACT: base class for R objects (C<SEXP>s)
+$Statistics::R::REXP::VERSION = '0.041';
 use 5.012;
 
 use Moo::Role;
@@ -69,16 +70,17 @@ sub is_vector {
 
 __END__
 
+=pod
+
+=encoding UTF-8
 
 =head1 NAME
 
-Statistics::R::REXP - Perl interface to serialized R data
-
+Statistics::R::REXP - base class for R objects (C<SEXP>s)
 
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -93,7 +95,6 @@ This documentation refers to version 0.04 of the module.
     # REXPs can be converted to the closest native Perl data type
     print $rexp->to_pl;
 
-
 =head1 DESCRIPTION
 
 An object of this class represents a native R object. This class
@@ -106,7 +107,6 @@ themselves are R objects. Because the meaning of 'value' depends on
 the actual object type (for example, a vector vs. a C<NULL>, in R
 terminology), C<REXP> does not provide a generic value accessor
 method, although individual subclasses will typically have one.
-
 
 =head1 METHODS
 
@@ -128,7 +128,6 @@ value of the object, if such makes sense.
 Returns TRUE if the object is an R C<NULL> object. In C<REXP>'s
 class hierarchy, this is the case only for C<Statistics::REXP::Null>.
 
-
 =item is_vector
 
 Returns TRUE if the object is an R vector object. In C<REXP>'s class
@@ -137,12 +136,10 @@ its descendants.
 
 =back
 
-
 =head1 OVERLOADS
 
 C<REXP> overloads the stringification, C<eq> and C<ne> methods;
 subclasses further specialize for their types if necesssary.
-
 
 =head1 BUGS AND LIMITATIONS
 
@@ -154,21 +151,20 @@ More C<is_*> accessors should be added.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

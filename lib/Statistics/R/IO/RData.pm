@@ -1,5 +1,6 @@
 package Statistics::R::IO::RData;
-
+# ABSTRACT: Supply object methods for RData files
+$Statistics::R::IO::RData::VERSION = '0.041';
 use 5.012;
 
 use Moo;
@@ -33,16 +34,17 @@ sub read {
 
 __END__
 
+=pod
+
+=encoding UTF-8
 
 =head1 NAME
 
 Statistics::R::IO::RData - Supply object methods for RData files
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -65,7 +67,6 @@ C<.RData> file extension. (Contents of the R workspace can also be
 saved automatically on exit to the file named F<.RData>, which is by
 default automatically read in on startup.)
 
-
 =head1 METHODS
 
 C<Statistics::R::IO::RData> inherits from L<Statistics::R::IO::Base>
@@ -82,27 +83,25 @@ L<Statistics::R::REXP> instances.
 
 =back
 
-
 =head1 BUGS AND LIMITATIONS
 
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

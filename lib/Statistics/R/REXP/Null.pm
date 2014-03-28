@@ -1,5 +1,6 @@
 package Statistics::R::REXP::Null;
-
+# ABSTRACT: the R null object
+$Statistics::R::REXP::Null::VERSION = '0.041';
 use 5.012;
 
 use Moo;
@@ -24,15 +25,19 @@ sub to_pl {
 
 1; # End of Statistics::R::REXP::Null
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
 =head1 NAME
 
 Statistics::R::REXP::Null - the R null object
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -42,13 +47,11 @@ This documentation refers to version 0.04 of the module.
     say $rexp->is_null;
     print $rexp->to_pl;
 
-
 =head1 DESCRIPTION
 
 An object of this class represents the null R object (C<NILSXP>). The
 null object does not have a value or attributes, and trying to set
 them will cause an exception.
-
 
 =head1 METHODS
 
@@ -70,6 +73,7 @@ returns C<undef>.
 
 =back
 
+=for Pod::Coverage is_null
 
 =head1 BUGS AND LIMITATIONS
 
@@ -79,21 +83,20 @@ do not try to change their value or attributes.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

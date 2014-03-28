@@ -1,5 +1,6 @@
 package Statistics::R::REXP::GlobalEnvironment;
-
+# ABSTRACT: the global R environment (C<.GlobalEnv>)
+$Statistics::R::REXP::GlobalEnvironment::VERSION = '0.041';
 use 5.012;
 
 use Moo;
@@ -25,15 +26,19 @@ around name => sub {
 
 1; # End of Statistics::R::REXP::GlobalEnvironment
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
 =head1 NAME
 
 Statistics::R::REXP::GlobalEnvironment - the global R environment (C<.GlobalEnv>)
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -45,7 +50,6 @@ This documentation refers to version 0.04 of the module.
     ]);
     print $env->elements;
 
-
 =head1 DESCRIPTION
 
 An object of this class represents an R environment (C<ENVSXP>), more
@@ -55,7 +59,6 @@ environment.
 
 You shouldn't create instances of this class, it exists mainly to
 handle deserialization of C<.GlobalEnv> by the C<IO> classes.
-
 
 =head1 METHODS
 
@@ -75,7 +78,6 @@ Just as in R, the name of the GlobalEnvironment is "R_GlobalEnvironment".
 
 =back
 
-
 =head1 BUGS AND LIMITATIONS
 
 Classes in the C<REXP> hierarchy are intended to be immutable. Please
@@ -84,21 +86,20 @@ do not try to change their value or attributes.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

@@ -1,5 +1,6 @@
 package Statistics::R::REXP::Symbol;
-
+# ABSTRACT: an R symbol
+$Statistics::R::REXP::Symbol::VERSION = '0.041';
 use 5.012;
 
 use Scalar::Util qw(blessed);
@@ -68,15 +69,19 @@ sub to_pl {
 
 1; # End of Statistics::R::REXP::Symbol
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
 =head1 NAME
 
 Statistics::R::REXP::Symbol - an R symbol
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -85,11 +90,9 @@ This documentation refers to version 0.04 of the module.
     my $sym = Statistics::R::REXP::Symbol->new('some name');
     print $sym->name;
 
-
 =head1 DESCRIPTION
 
 An object of this class represents an R symbol/name object (C<SYMSXP>).
-
 
 =head1 METHODS
 
@@ -109,6 +112,7 @@ Perl value of the symbol is just its C<name>.
 
 =back
 
+=for Pod::Coverage BUILDARGS
 
 =head1 BUGS AND LIMITATIONS
 
@@ -118,21 +122,20 @@ do not try to change their value or attributes.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

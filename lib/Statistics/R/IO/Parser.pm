@@ -1,5 +1,6 @@
 package Statistics::R::IO::Parser;
-
+# ABSTRACT: Functions for parsing R data files
+$Statistics::R::IO::Parser::VERSION = '0.041';
 use 5.012;
 use strict;
 use warnings FATAL => 'all';
@@ -402,16 +403,17 @@ sub with_count {
 
 __END__
 
+=pod
+
+=encoding UTF-8
 
 =head1 NAME
 
 Statistics::R::IO::Parser - Functions for parsing R data files
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -424,12 +426,10 @@ This documentation refers to version 0.04 of the module.
     say $state->at
     say $state->next->at;
 
-
 =head1 DESCRIPTION
 
 You shouldn't create instances of this class, it exists mainly to
 handle deserialization of R data files by the C<IO> classes.
-
 
 =head1 FUNCTIONS
 
@@ -484,7 +484,6 @@ signal failure.
 
 =back
 
-
 =head2 NUMBER PARSERS
 
 =over
@@ -498,7 +497,6 @@ the B<module's> state and remains in effect until the next change.
 
 When called with no arguments, C<endianness> returns the current
 byte order in effect. The starting byte order is big-endian.
-
 
 =item any_uint8, any_uint16, any_uint24, any_uint32
 
@@ -551,9 +549,7 @@ real value is determined by the current value of C<endianness>. If
 there are not enough elements left in the data from the current
 position, returns undef to signal failure.
 
-
 =back
-
 
 =head2 SEQUENCING
 
@@ -567,7 +563,6 @@ etc.  Returns a pair of the concatenation of all the parsers'
 results and the parsing state returned by the final parser. If any
 of the parsers returns undef, C<seq> will return it immediately
 without attempting to apply any further parsers.
-
 
 =item count $n, $p
 
@@ -590,7 +585,6 @@ returned by the final application. If the initial application of
 C<$num_p> or any application of C<$p> returns undef, C<with_count>
 will return it immediately without attempting any more applications.
 
-
 =item choose $p1, ...
 
 This combinator applies parsers C<$p1>, ... in sequence, until one
@@ -598,7 +592,6 @@ of them succeeds, when it immediately returns the parser's result.
 If all of the parsers fail, C<choose> fails and returns undef
 
 =back
-
 
 =head2 COMBINATORS
 
@@ -621,12 +614,10 @@ written as:
              count $n, $p;
          })
 
-
 =item mreturn $value
 
 Returns a parser that when applied returns C<$value> without
 changing the parsing state.
-
 
 =item error $message
 
@@ -634,7 +625,6 @@ Returns a parser that when applied croaks with the C<$message> and
 the current parsing state.
 
 =back
-
 
 =head2 SINGLETONS
 
@@ -652,13 +642,11 @@ to them by a "reference id".
 Adds the C<$singleton> to the current parsing state.  Returns a pair
 of C<$singleton> and the new parsing state.
 
-
 =item get_singleton $ref_id
 
 Retrieves from the current parse state the singleton identified by
 C<$ref_id>, returning a pair of the singleton and the (unchanged)
 state.
-
 
 =item reserve_singleton $p
 
@@ -668,7 +656,6 @@ of the singleton and the new parse state.
 
 =back
 
-
 =head1 BUGS AND LIMITATIONS
 
 Instances of this class are intended to be immutable. Please do not
@@ -677,21 +664,20 @@ try to change their value or attributes.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

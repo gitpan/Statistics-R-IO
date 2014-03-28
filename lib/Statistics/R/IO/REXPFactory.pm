@@ -1,5 +1,6 @@
 package Statistics::R::IO::REXPFactory;
-
+# ABSTRACT: Functions for parsing R data files
+$Statistics::R::IO::REXPFactory::VERSION = '0.041';
 use 5.012;
 
 use strict;
@@ -423,15 +424,17 @@ sub unserialize {
 
 __END__
 
+=pod
+
+=encoding UTF-8
+
 =head1 NAME
 
 Statistics::R::IO::REXPFactory - Functions for parsing R data files
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -458,6 +461,8 @@ and their conversion to a L<Statistics::R::REXP>. You are not
 expected to use it directly, as it's normally wrapped by
 L<Statistics::R::IO/readRDS> and L<Statistics::R::IO/readRData>.
 
+=head1 NAME
+
 =head1 SUBROUTINES
 
 =over
@@ -468,18 +473,15 @@ Constructs a L<Statistics::R::REXP> object from its serialization in
 C<$data>. Returns a pair of the object and the
 L<Statistics::R::IO::ParserState> at the end of serialization.
 
-
 =item intsxp, langsxp, lglsxp, listsxp, rawsxp, realsxp, refsxp,
 strsxp, symsxp, vecsxp, envsxp, charsxp
 
 Parsers for the corresponding R SEXP-types.
 
-
 =item object_content
 
 Parses object info and its data by sequencing L</unpack_object_info>
 and L</object_data>.
-
 
 =item unpack_object_info
 
@@ -491,13 +493,11 @@ L<http://cran.r-project.org/doc/manuals/r-release/R-ints.html#Serialization-Form
 An additional key "flags" contains the full 32-bit value as stored
 in the file.
 
-
 =item object_data $obj_info
 
 Parser for a serialized R object, using the object type stored in
 C<$obj_info> hash's "object_type" key to use the correct parser for
 the particular type.
-
 
 =item vector_and_attributes $object_info, $element_parser, $rexp_class
 
@@ -508,7 +508,6 @@ indicates their presence, while vector elements are parsed using
 C<$element_parser>. Finally, the parsed attributes and elements are
 used as arguments to the constructor of the C<$rexp_class>, which
 should be a subclass of L<Statistics::R::REXP::Vector>.
-
 
 =item header
 
@@ -543,31 +542,27 @@ Some attributes are serialized using a compact encoding (for
 instance, when a table's row names are just integers 1:nrows), and
 this function will decode them to a complete REXP.
 
-
 =back
-
 
 =head1 BUGS AND LIMITATIONS
 
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut
-

@@ -1,5 +1,6 @@
 package Statistics::R::REXP::Raw;
-
+# ABSTRACT: an R raw vector
+$Statistics::R::REXP::Raw::VERSION = '0.041';
 use 5.012;
 
 use Scalar::Util qw(looks_like_number);
@@ -27,15 +28,19 @@ sub _type { 'raw'; }
 
 1; # End of Statistics::R::REXP::Raw
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
 =head1 NAME
 
 Statistics::R::REXP::Raw - an R raw vector
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -46,13 +51,11 @@ This documentation refers to version 0.04 of the module.
     ]);
     print $vec->elements;
 
-
 =head1 DESCRIPTION
 
 An object of this class represents an R raw vector (C<RAWSXP>). It is
 intended to hold the data of arbitrary binary objects, for instance
 bytes read from a socket connection.
-
 
 =head1 METHODS
 
@@ -62,7 +65,6 @@ elements are byte values and cannot have missing values. Trying to
 create a raw vectors with elements that are not numbers in range 0-255
 will raise an exception.
 
-
 =head1 BUGS AND LIMITATIONS
 
 Classes in the C<REXP> hierarchy are intended to be immutable. Please
@@ -71,21 +73,20 @@ do not try to change their value or attributes.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

@@ -1,5 +1,6 @@
 package Statistics::R::IO::RDS;
-
+# ABSTRACT: Supply object methods for RDS files
+$Statistics::R::IO::RDS::VERSION = '0.041';
 use 5.012;
 
 use Moo;
@@ -28,16 +29,17 @@ sub read {
 
 __END__
 
+=pod
+
+=encoding UTF-8
 
 =head1 NAME
 
 Statistics::R::IO::RDS - Supply object methods for RDS files
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -48,7 +50,6 @@ This documentation refers to version 0.04 of the module.
     print $var->to_pl;
     $rds->close;
 
-
 =head1 DESCRIPTION
 
 C<Statistics::R::IO::RDS> provides an object-oriented interface to
@@ -57,7 +58,6 @@ object (and, if the object contains references to other objects, such
 as environments, all the referenced objects as well). These files are
 created in R using the C<readRDS> function and are typically named
 with the C<.rds> file extension.
-
 
 =head1 METHODS
 
@@ -74,7 +74,6 @@ L<Statistics::R::REXP>.
 
 =back
 
-
 =head1 BUGS AND LIMITATIONS
 
 Instances of this class are intended to be immutable. Please do not
@@ -83,21 +82,20 @@ try to change their value or attributes.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

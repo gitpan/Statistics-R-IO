@@ -1,5 +1,6 @@
 package Statistics::R::IO;
-
+# ABSTRACT: Perl interface to serialized R data
+$Statistics::R::IO::VERSION = '0.041';
 use 5.012;
 use strict;
 use warnings FATAL => 'all';
@@ -16,8 +17,6 @@ use IO::Uncompress::Gunzip ();
 use IO::Uncompress::Bunzip2 ();
 use IO::Socket::INET ();
 use Carp;
-
-our $VERSION = '0.04';
 
 
 sub readRDS {
@@ -138,16 +137,17 @@ sub evalRserve {
 
 __END__
 
+=pod
+
+=encoding UTF-8
 
 =head1 NAME
 
 Statistics::R::IO - Perl interface to serialized R data
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -204,29 +204,20 @@ subroutines, and the L<R Internals
 manual|http://cran.r-project.org/doc/manuals/R-ints.html> for the
 specification of the file formats.
 
+=head1 FUNCTIONS
 
-=head1 EXPORT
-
-Nothing by default. Optionally, subroutines C<readRDS>, C<readRData>,
-and C<evalRserve>, or C<:all> for all three.
-
-
-=head1 SUBROUTINES
-
-=over 4
-
-=item readRDS EXPR
+=head2 readRDS EXPR
 
 Reads a file in RDS format whose filename is given by EXPR and returns
 a L<Statistics::R::REXP> object.
 
-=item readRData EXPR
+=head2 readRData EXPR
 
 Reads a file in RData format whose filename is given by EXPR and
 returns a hash whose keys are the names of objects stored in the file
 with corresponding values as L<Statistics::R::REXP> instances.
 
-=item evalRserve REXPR [ HOSTNAME [, PORT] | HANDLE]
+=head2 evalRserve REXPR [ HOSTNAME [, PORT] | HANDLE]
 
 Evaluates an R expression, given as text string in REXPR, on an
 L<Rserve|http://www.rforge.net/Rserve/> server and returns its result
@@ -246,8 +237,10 @@ Rserve port, 6311.
 The function will close the connection to the Rserve host if it has
 opened it itself, but not if the connection was passed as a HANDLE.
 
-=back
+=head1 EXPORT
 
+Nothing by default. Optionally, subroutines C<readRDS>, C<readRData>,
+and C<evalRserve>, or C<:all> for all three.
 
 =head1 DEPENDENCIES
 
@@ -287,7 +280,6 @@ Requires perl 5.012 or newer.
 
 =back
 
-
 =head1 BUGS AND LIMITATIONS
 
 The module currently handles the 'version 2' serialization format,
@@ -321,13 +313,11 @@ L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Statistics-R-IO>. I
 will be notified, and then you'll automatically be notified of
 progress on your bug as I make changes.
 
-
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
     perldoc Statistics::R::IO
-
 
 You can also look for information at:
 
@@ -351,28 +341,16 @@ L<http://search.cpan.org/dist/Statistics-R-IO/>
 
 =back
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see L<http://www.gnu.org/licenses/>.
-
+  The GNU General Public License, Version 3, June 2007
 
 =cut

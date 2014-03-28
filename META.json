@@ -3,10 +3,10 @@
    "author" : [
       "Davor Cubranic <cubranic@stat.ubc.ca>"
    ],
-   "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.140640",
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 5.014, CPAN::Meta::Converter version 2.140640",
    "license" : [
-      "open_source"
+      "gpl_3"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
@@ -14,17 +14,16 @@
    },
    "name" : "Statistics-R-IO",
    "prereqs" : {
-      "build" : {
-         "requires" : {
-            "Test::Fatal" : "0",
-            "Test::MockObject" : "0",
-            "Test::More" : "0"
-         }
-      },
       "configure" : {
          "requires" : {
-            "Module::Build" : "0",
-            "Software::License" : "0"
+            "ExtUtils::MakeMaker" : "6.30"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Pod::Coverage::TrustPod" : "0",
+            "Test::Pod" : "1.41",
+            "Test::Pod::Coverage" : "1.08"
          }
       },
       "runtime" : {
@@ -34,79 +33,24 @@
             "namespace::clean" : "0",
             "perl" : "5.012"
          }
-      }
-   },
-   "provides" : {
-      "Statistics::R::IO" : {
-         "file" : "lib/Statistics/R/IO.pm",
-         "version" : "0.04"
       },
-      "Statistics::R::IO::Base" : {
-         "file" : "lib/Statistics/R/IO/Base.pm"
-      },
-      "Statistics::R::IO::Parser" : {
-         "file" : "lib/Statistics/R/IO/Parser.pm"
-      },
-      "Statistics::R::IO::ParserState" : {
-         "file" : "lib/Statistics/R/IO/ParserState.pm"
-      },
-      "Statistics::R::IO::RDS" : {
-         "file" : "lib/Statistics/R/IO/RDS.pm"
-      },
-      "Statistics::R::IO::RData" : {
-         "file" : "lib/Statistics/R/IO/RData.pm"
-      },
-      "Statistics::R::IO::REXPFactory" : {
-         "file" : "lib/Statistics/R/IO/REXPFactory.pm"
-      },
-      "Statistics::R::IO::Rserve" : {
-         "file" : "lib/Statistics/R/IO/Rserve.pm"
-      },
-      "Statistics::R::REXP" : {
-         "file" : "lib/Statistics/R/REXP.pm"
-      },
-      "Statistics::R::REXP::Character" : {
-         "file" : "lib/Statistics/R/REXP/Character.pm"
-      },
-      "Statistics::R::REXP::Double" : {
-         "file" : "lib/Statistics/R/REXP/Double.pm"
-      },
-      "Statistics::R::REXP::Environment" : {
-         "file" : "lib/Statistics/R/REXP/Environment.pm"
-      },
-      "Statistics::R::REXP::GlobalEnvironment" : {
-         "file" : "lib/Statistics/R/REXP/GlobalEnvironment.pm"
-      },
-      "Statistics::R::REXP::Integer" : {
-         "file" : "lib/Statistics/R/REXP/Integer.pm"
-      },
-      "Statistics::R::REXP::Language" : {
-         "file" : "lib/Statistics/R/REXP/Language.pm"
-      },
-      "Statistics::R::REXP::List" : {
-         "file" : "lib/Statistics/R/REXP/List.pm"
-      },
-      "Statistics::R::REXP::Logical" : {
-         "file" : "lib/Statistics/R/REXP/Logical.pm"
-      },
-      "Statistics::R::REXP::Null" : {
-         "file" : "lib/Statistics/R/REXP/Null.pm"
-      },
-      "Statistics::R::REXP::Raw" : {
-         "file" : "lib/Statistics/R/REXP/Raw.pm"
-      },
-      "Statistics::R::REXP::Symbol" : {
-         "file" : "lib/Statistics/R/REXP/Symbol.pm"
-      },
-      "Statistics::R::REXP::Vector" : {
-         "file" : "lib/Statistics/R/REXP/Vector.pm"
+      "test" : {
+         "requires" : {
+            "Test::Fatal" : "0",
+            "Test::MockObject" : "0",
+            "Test::More" : "0"
+         }
       }
    },
    "release_status" : "stable",
    "resources" : {
-      "license" : [
-         "http://www.gnu.org/licenses/gpl-3.0.txt"
-      ]
+      "homepage" : "https://github.com/cubranic/Statistics-R-IO",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/cubranic/Statistics-R-IO.git",
+         "web" : "https://github.com/cubranic/Statistics-R-IO"
+      }
    },
-   "version" : "0.04"
+   "version" : "0.041"
 }
+

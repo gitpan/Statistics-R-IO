@@ -1,12 +1,13 @@
 package Statistics::R::IO::Rserve;
-
+# ABSTRACT: Supply object methods for Rserve communication
+$Statistics::R::IO::Rserve::VERSION = '0.041';
 use 5.012;
 
 use Moo;
 
 use Statistics::R::IO::REXPFactory;
 use IO::Socket::INET ();
-use Scalar::Util qw(looks_like_number);
+use Scalar::Util qw(blessed looks_like_number);
 use Carp;
 
 use namespace::clean;
@@ -25,8 +26,9 @@ has fh => (
         $fh
     },
     isa => sub {
+        my $obj = shift;
         die "'fh' must be a file handle"
-            unless UNIVERSAL::isa($_[0], 'IO::Handle')
+            unless blessed($obj) && $obj->isa('IO::Handle')
     }
 );
 
@@ -150,16 +152,17 @@ sub DEMOLISH {
 
 __END__
 
+=pod
+
+=encoding UTF-8
 
 =head1 NAME
 
-Statistics::R::IO::RDS - Supply object methods for Rserve communication
-
+Statistics::R::IO::Rserve - Supply object methods for Rserve communication
 
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -170,7 +173,6 @@ This documentation refers to version 0.04 of the module.
     print $var->to_pl;
     $rserve->close;
 
-
 =head1 DESCRIPTION
 
 C<Statistics::R::IO::Rserve> provides an object-oriented interface to
@@ -179,7 +181,6 @@ server.
 
 This allows Perl programs to access all facilities of R without the
 need to have a local install of R or link to an R library.
-
 
 =head1 METHODS
 
@@ -222,7 +223,6 @@ correct version of Rserve.
 
 =back
 
-
 =head2 ACCESSORS
 
 =over
@@ -242,7 +242,6 @@ the Rserve server.
 
 =back
 
-
 =head2 METHODS
 
 =over
@@ -261,6 +260,7 @@ constructor, but not if it was passed in as a pre-opened handle.
 
 =back
 
+=for Pod::Coverage BUILDARGS DEMOLISH
 
 =head1 BUGS AND LIMITATIONS
 
@@ -270,21 +270,20 @@ try to change their value or attributes.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut

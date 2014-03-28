@@ -1,5 +1,6 @@
 package Statistics::R::IO::ParserState;
-
+# ABSTRACT: Current state of the IO parser
+$Statistics::R::IO::ParserState::VERSION = '0.041';
 use 5.012;
 
 use Moo;
@@ -62,16 +63,17 @@ sub eof {
 
 __END__
 
+=pod
+
+=encoding UTF-8
 
 =head1 NAME
 
 Statistics::R::IO::ParserState - Current state of the IO parser
 
-
 =head1 VERSION
 
-This documentation refers to version 0.04 of the module.
-
+version 0.041
 
 =head1 SYNOPSIS
 
@@ -83,12 +85,10 @@ This documentation refers to version 0.04 of the module.
     say $state->at
     say $state->next->at;
 
-
 =head1 DESCRIPTION
 
 You shouldn't create instances of this class, it exists mainly to
 handle deserialization of R data files by the C<IO> classes.
-
 
 =head1 METHODS
 
@@ -124,7 +124,6 @@ Return the singleton data object with the given C<$id>.
 
 =back
 
-
 =head2 MUTATORS
 
 C<ParserState> is intended to be immutable, so the "mutator" methods
@@ -152,21 +151,20 @@ try to change their value or attributes.
 There are no known bugs in this module. Please see
 L<Statistics::R::IO> for bug reporting.
 
-
 =head1 SUPPORT
 
 See L<Statistics::R::IO> for support and contact information.
 
-
 =head1 AUTHOR
 
-Davor Cubranic, C<< <cubranic at stat.ubc.ca> >>
+Davor Cubranic <cubranic@stat.ubc.ca>
 
+=head1 COPYRIGHT AND LICENSE
 
-=head1 LICENSE AND COPYRIGHT
+This software is Copyright (c) 2014 by University of British Columbia.
 
-Copyright 2014 University of British Columbia.
+This is free software, licensed under:
 
-See L<Statistics::R::IO> for the license.
+  The GNU General Public License, Version 3, June 2007
 
 =cut
