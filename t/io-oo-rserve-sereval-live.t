@@ -9,7 +9,7 @@ use Test::More;
 my $rserve = IO::Socket::INET->new(PeerAddr => 'localhost',
                                    PeerPort => 6311);
 if ($rserve) {
-    plan tests => 15;
+    plan tests => 16;
     $rserve->sysread(my $response, 32);
     die "Unrecognized server ID" unless
         substr($response, 0, 12) eq 'Rsrv0103QAP1';
@@ -26,11 +26,11 @@ sub check_rserve_eval_variants {
     my ($rexp, $expected, $message) = @_;
 
     subtest 'rserve eval ' . $message => sub {
-        is(Statistics::R::IO::Rserve->new->eval($rexp),
+        is(Statistics::R::IO::Rserve->new->ser_eval($rexp),
            $expected, $message . ' no arg constructor');
-        is(Statistics::R::IO::Rserve->new('localhost')->eval($rexp),
+        is(Statistics::R::IO::Rserve->new('localhost')->ser_eval($rexp),
            $expected, $message . ' localhost arg');
-        is(Statistics::R::IO::Rserve->new($rserve)->eval($rexp),
+        is(Statistics::R::IO::Rserve->new($rserve)->ser_eval($rexp),
            $expected, $message . ' handle arg');
     }
 }
@@ -215,6 +215,31 @@ check_rserve_eval_variants('head(iris)',
            ]),
        }),
    'the iris data frame');
+
+
+## Call lm(mpg ~ wt, data = head(mtcars))
+check_rserve_eval_variants('lm(mpg ~ wt, data = head(mtcars))$call',
+   Statistics::R::REXP::Language->new(
+       elements => [
+           Statistics::R::REXP::Symbol->new('lm'),
+           Statistics::R::REXP::Language->new(
+               elements => [
+                   Statistics::R::REXP::Symbol->new('~'),
+                   Statistics::R::REXP::Symbol->new('mpg'),
+                   Statistics::R::REXP::Symbol->new('wt'),
+               ]),
+           Statistics::R::REXP::Language->new(
+               elements => [
+                   Statistics::R::REXP::Symbol->new('head'),
+                   Statistics::R::REXP::Symbol->new('mtcars'),
+               ]),
+       ],
+       attributes => {
+           names => Statistics::R::REXP::Character->new([
+               '', 'formula', 'data' ])
+       }),
+   'language lm(mpg~wt, head(mtcars))');
+
 
 ## serialize lm(mpg ~ wt, data = head(mtcars))
 check_rserve_eval_variants('lm(mpg ~ wt, data = head(mtcars))',

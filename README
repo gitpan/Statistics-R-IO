@@ -2,7 +2,7 @@ NAME
     Statistics::R::IO - Perl interface to serialized R data
 
 VERSION
-    version 0.041
+    version 0.05
 
 SYNOPSIS
         use Statistics::R::IO;
@@ -50,38 +50,38 @@ DESCRIPTION
     <http://cran.r-project.org/doc/manuals/R-ints.html> for the
     specification of the file formats.
 
-FUNCTIONS
-  readRDS EXPR
-    Reads a file in RDS format whose filename is given by EXPR and returns a
-    Statistics::R::REXP object.
-
-  readRData EXPR
-    Reads a file in RData format whose filename is given by EXPR and returns
-    a hash whose keys are the names of objects stored in the file with
-    corresponding values as Statistics::R::REXP instances.
-
-  evalRserve REXPR [ HOSTNAME [, PORT] | HANDLE]
-    Evaluates an R expression, given as text string in REXPR, on an Rserve
-    <http://www.rforge.net/Rserve/> server and returns its result as a
-    Statistics::R::REXP object.
-
-    The server location can be specified either by its host name and
-    (optionally) port or by a connected instance of IO::Handle. The caller
-    passing the HANDLE is responsible for reading (and checking) the server
-    ID that is returned in the first 32-byte response when the connection
-    was established. This allows opening the connection once and reusing it
-    in multiple calls to 'evalRserve'.
-
-    If only REXPR is given, the function assumes that the server runs on the
-    localhost. If PORT is not specified, it defaults to the standard Rserve
-    port, 6311.
-
-    The function will close the connection to the Rserve host if it has
-    opened it itself, but not if the connection was passed as a HANDLE.
-
 EXPORT
     Nothing by default. Optionally, subroutines "readRDS", "readRData", and
     "evalRserve", or ":all" for all three.
+
+SUBROUTINES
+    readRDS EXPR
+        Reads a file in RDS format whose filename is given by EXPR and
+        returns a Statistics::R::REXP object.
+
+    readRData EXPR
+        Reads a file in RData format whose filename is given by EXPR and
+        returns a hash whose keys are the names of objects stored in the
+        file with corresponding values as Statistics::R::REXP instances.
+
+    evalRserve REXPR [ HOSTNAME [, PORT] | HANDLE]
+        Evaluates an R expression, given as text string in REXPR, on an
+        Rserve <http://www.rforge.net/Rserve/> server and returns its result
+        as a Statistics::R::REXP object.
+
+        The server location can be specified either by its host name and
+        (optionally) port or by a connected instance of IO::Handle. The
+        caller passing the HANDLE is responsible for reading (and checking)
+        the server ID that is returned in the first 32-byte response when
+        the connection was established. This allows opening the connection
+        once and reusing it in multiple calls to 'evalRserve'.
+
+        If only REXPR is given, the function assumes that the server runs on
+        the localhost. If PORT is not specified, it defaults to the standard
+        Rserve port, 6311.
+
+        The function will close the connection to the Rserve host if it has
+        opened it itself, but not if the connection was passed as a HANDLE.
 
 DEPENDENCIES
     Requires perl 5.012 or newer.

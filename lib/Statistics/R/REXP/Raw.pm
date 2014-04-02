@@ -1,6 +1,6 @@
 package Statistics::R::REXP::Raw;
 # ABSTRACT: an R raw vector
-$Statistics::R::REXP::Raw::VERSION = '0.041';
+$Statistics::R::REXP::Raw::VERSION = '0.05';
 use 5.012;
 
 use Scalar::Util qw(looks_like_number);
@@ -40,7 +40,7 @@ Statistics::R::REXP::Raw - an R raw vector
 
 =head1 VERSION
 
-version 0.041
+version 0.05
 
 =head1 SYNOPSIS
 

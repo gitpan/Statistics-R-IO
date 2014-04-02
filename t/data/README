@@ -139,6 +139,12 @@ Data frame:
 - iris-xdr: serialize(head(iris), f, ascii=F, xdr=T)
 
 
+Language:
+
+- lang-lm-mpgwt-xdr: serialize(lm(mpg ~ wt, data = head(mtcars))$call,
+  f, ascii=F, xdr=T)
+
+
 More complex:
 
 - mtcars-lm-mpgwt-xdr: serialize(lm(mpg ~ wt, data = head(mtcars)), f,
@@ -173,3 +179,13 @@ Environments:
 [226] fe 00 00 00 fe 00 00 00 fe 00 00 00 fe 00 00 00 fe 00 00 00 fe 00 00 00 fe
 [251] 00 00 00 fe 00 00 00 fe 00 00 00 fe 00 00 00 fe 00 00 00 fe 00 00 00 fe 00
 [276] 00 00 fe 00 00 00 fe 00 00 00 fe
+
+
+Additional formats:
+
+- .rds: the object from the corresponding file serialized using
+  `saveRDS` (with no compression, or using Gzip, Bzip2, and XZ, as
+  recorded in the name)
+
+- .qap: the object from the corresponding file serialized by the
+  Rserve server using the QAP protocol

@@ -1,6 +1,6 @@
 package Statistics::R::REXP;
 # ABSTRACT: base class for R objects (C<SEXP>s)
-$Statistics::R::REXP::VERSION = '0.041';
+$Statistics::R::REXP::VERSION = '0.05';
 use 5.012;
 
 use Moo::Role;
@@ -80,7 +80,7 @@ Statistics::R::REXP - base class for R objects (C<SEXP>s)
 
 =head1 VERSION
 
-version 0.041
+version 0.05
 
 =head1 SYNOPSIS
 

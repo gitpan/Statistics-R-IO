@@ -1,6 +1,6 @@
 package Statistics::R::IO::REXPFactory;
 # ABSTRACT: Functions for parsing R data files
-$Statistics::R::IO::REXPFactory::VERSION = '0.041';
+$Statistics::R::IO::REXPFactory::VERSION = '0.05';
 use 5.012;
 
 use strict;
@@ -434,7 +434,7 @@ Statistics::R::IO::REXPFactory - Functions for parsing R data files
 
 =head1 VERSION
 
-version 0.041
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -460,8 +460,6 @@ This module implements the actual reading of serialized R objects
 and their conversion to a L<Statistics::R::REXP>. You are not
 expected to use it directly, as it's normally wrapped by
 L<Statistics::R::IO/readRDS> and L<Statistics::R::IO/readRData>.
-
-=head1 NAME
 
 =head1 SUBROUTINES
 

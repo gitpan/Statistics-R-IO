@@ -1,11 +1,12 @@
 package Statistics::R::IO::Rserve;
 # ABSTRACT: Supply object methods for Rserve communication
-$Statistics::R::IO::Rserve::VERSION = '0.041';
+$Statistics::R::IO::Rserve::VERSION = '0.05';
 use 5.012;
 
 use Moo;
 
 use Statistics::R::IO::REXPFactory;
+use Statistics::R::IO::QapEncoding;
 use IO::Socket::INET ();
 use Scalar::Util qw(blessed looks_like_number);
 use Carp;
@@ -96,6 +97,24 @@ sub BUILDARGS {
 
 
 sub eval {
+    my ($self, $expr) = (shift, shift);
+
+    # Encode $expr as DT_STRING
+    my $parameter = pack('VZ*',
+                         ((length($expr)+1) << 8) + 4,
+                         $expr);
+
+    ## CMD_eval is 0x03
+    my $data = $self->_send_command(0x03, $parameter);
+
+    my ($value, $state) = @{Statistics::R::IO::QapEncoding::decode($data)};
+    croak 'Could not parse Rserve value' unless $state;
+    croak 'Unread data remaining in the Rserve response' unless $state->eof;
+    $value
+}
+
+
+sub ser_eval {
     my ($self, $rexp) = (shift, shift);
     
     ## simulate the request parameter as constructed by:
@@ -112,11 +131,29 @@ sub eval {
     ## request is:
     ## - command (0xf5, CMD_serEval,
     ##       means raw serialized data without data header)
+    my $data = $self->_send_command(0xf5, $parameter);
+    
+    my ($value, $state) = @{Statistics::R::IO::REXPFactory::unserialize($data)};
+    croak 'Could not parse Rserve value' unless $state;
+    croak 'Unread data remaining in the Rserve response' unless $state->eof;
+    $value
+}
+
+
+## Sends a request to Rserve and receives the response, checking for
+## any errors.
+## 
+## Returns the data portion of the server response
+sub _send_command {
+    my ($self, $command, $parameters) = (shift, shift, shift || '');
+    
+    ## request is (byte order is low-endian):
+    ## - command (4 bytes)
     ## - length of the message (low 32 bits)
-    ## - offset of the data part
+    ## - offset of the data part (normally 0)
     ## - high 32 bits of the length of the message (0 if < 4GB)
-    $self->fh->syswrite(pack('V4', 245, length($parameter), 0, 0) .
-                        $parameter);
+    $self->fh->syswrite(pack('V4', $command, length($parameters), 0, 0) .
+                        $parameters);
     
     $self->fh->sysread(my $response, 16);
     ## Of the next four long-ints:
@@ -129,10 +166,8 @@ sub eval {
     }
     
     $self->fh->sysread(my $data, $length);
-    my ($value, $state) = @{Statistics::R::IO::REXPFactory::unserialize($data)};
-    croak 'Could not parse Rserve value' unless $state;
-    croak 'Unread data remaining in the Rserve response' unless $state->eof;
-    $value
+    
+    $data
 }
 
 
@@ -162,7 +197,7 @@ Statistics::R::IO::Rserve - Supply object methods for Rserve communication
 
 =head1 VERSION
 
-version 0.041
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -251,6 +286,16 @@ the Rserve server.
 Evaluates an R expression, given as text string in REXPR, on an
 L<Rserve|http://www.rforge.net/Rserve/> server and returns its result
 as a L<Statistics::R::REXP> object.
+
+=item ser_eval EXPR
+
+Evaluates an R expression, given as text string in REXPR, on an
+L<Rserve|http://www.rforge.net/Rserve/> server and returns its result
+as a L<Statistics::R::REXP> object. This method uses the CMD_serEval
+Rserve command (code 0xf5), which is designated as "internal/special"
+and "should not be used by clients". Consequently, it is not
+recommended to use this method in a production environment, but only
+to help debug cases where C<eval> isn't working as desired.
 
 =item close
 

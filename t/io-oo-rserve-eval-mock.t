@@ -3,7 +3,7 @@ use 5.012;
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More tests => 16;
+use Test::More tests => 17;
 use Test::Fatal;
 use Test::MockObject::Extends;
 
@@ -42,7 +42,7 @@ sub mock_rserve_response {
 sub parse_rserve_eval {
     my ($file, $expected, $message) = @_;
 
-    my $filename = $file . '-xdr';
+    my $filename = $file . '.qap';
     
     subtest 'mock ' . $message => sub {
         plan tests => 9;
@@ -61,7 +61,7 @@ sub parse_rserve_eval {
         my ($command, $length, $offset, $length_hi) =
             unpack('V4', $args->[1]);
         is($command,
-           0xf5, 'request CMD_serEval');
+           0x03, 'request CMD_eval');
         is($length+16,
            length($args->[1]), 'request length');
         is($offset,
@@ -259,6 +259,31 @@ parse_rserve_eval('t/data/iris',
        }),
    'the iris data frame');
 
+
+## Call lm(mpg ~ wt, data = head(mtcars))
+parse_rserve_eval('t/data/lang-lm-mpgwt',
+                  Statistics::R::REXP::Language->new(
+                      elements => [
+                          Statistics::R::REXP::Symbol->new('lm'),
+                          Statistics::R::REXP::Language->new(
+                              elements => [
+                                  Statistics::R::REXP::Symbol->new('~'),
+                                  Statistics::R::REXP::Symbol->new('mpg'),
+                                  Statistics::R::REXP::Symbol->new('wt'),
+                              ]),
+                          Statistics::R::REXP::Language->new(
+                              elements => [
+                                  Statistics::R::REXP::Symbol->new('head'),
+                                  Statistics::R::REXP::Symbol->new('mtcars'),
+                              ]),
+                      ],
+                      attributes => {
+                          names => Statistics::R::REXP::Character->new([
+                              '', 'formula', 'data' ])
+                      }),
+                  'language lm(mpg~wt, head(mtcars))');
+
+
 ## serialize lm(mpg ~ wt, data = head(mtcars))
 parse_rserve_eval('t/data/mtcars-lm-mpgwt',
    Statistics::R::REXP::List->new(
@@ -402,7 +427,7 @@ parse_rserve_eval('t/data/mtcars-lm-mpgwt',
                    class => Statistics::R::REXP::Character->new([
                        'terms', 'formula'
                    ]),
-                   '.Environment' => Statistics::R::REXP::GlobalEnvironment->new,
+                   '.Environment' => Statistics::R::REXP::Unknown->new(sexptype=>4),
                    predvars => Statistics::R::REXP::Language->new(
                        elements => [
                            Statistics::R::REXP::Symbol->new('list'),
@@ -457,7 +482,7 @@ parse_rserve_eval('t/data/mtcars-lm-mpgwt',
                            class => Statistics::R::REXP::Character->new([
                                'terms', 'formula'
                            ]),
-                           '.Environment' => Statistics::R::REXP::GlobalEnvironment->new,
+                           '.Environment' => Statistics::R::REXP::Unknown->new(sexptype=>4),
                            predvars => Statistics::R::REXP::Language->new(
                                elements => [
                                    Statistics::R::REXP::Symbol->new('list'),

@@ -1,6 +1,6 @@
 package Statistics::R::REXP::Logical;
 # ABSTRACT: an R logical vector
-$Statistics::R::REXP::Logical::VERSION = '0.041';
+$Statistics::R::REXP::Logical::VERSION = '0.05';
 use 5.012;
 
 use Moo;
@@ -32,7 +32,7 @@ Statistics::R::REXP::Logical - an R logical vector
 
 =head1 VERSION
 
-version 0.041
+version 0.05
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,6 @@
 package Statistics::R::REXP::Double;
 # ABSTRACT: an R numeric vector
-$Statistics::R::REXP::Double::VERSION = '0.041';
+$Statistics::R::REXP::Double::VERSION = '0.05';
 use 5.012;
 
 use Scalar::Util qw(looks_like_number);
@@ -34,7 +34,7 @@ Statistics::R::REXP::Double - an R numeric vector
 
 =head1 VERSION
 
-version 0.041
+version 0.05
 
 =head1 SYNOPSIS
 

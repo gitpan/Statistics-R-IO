@@ -3,68 +3,90 @@ use 5.012;
 use strict;
 use warnings FATAL => 'all';
 
-use Test::More tests => 20;
+use Test::More tests => 17;
 use Test::Fatal;
+use Test::MockObject::Extends;
 
-use Statistics::R::IO::RDS;
+use Statistics::R::IO::Rserve;
 use Statistics::R::IO::REXPFactory;
 
 
-## integer vectors
+sub mock_rserve_response {
+    my $filename = shift;
+    open (my $f, $filename) or die $! . " $filename";
+    my $data;
+    sysread($f, $data, 1<<30);
+    my $response = pack("VVA*", 0x10001, length($data), "\0"x8) .
+        $data;
 
-sub check_rds {
-    my ($file, $expected, $message) = @_;
-
-    subtest 'rds ' . $message => sub {
-        plan tests => 2;
-
-        ## test with filename
-        my $rds = Statistics::R::IO::RDS->new($file);
-        my $actual = $rds->read;
-        is($actual, $expected, $message);
-        $rds->close;
-
-        ## test with raw file handle
-        open my $fh, $file or die $!;
-        $rds = Statistics::R::IO::RDS->new({ fh => $fh });
-        $actual = $rds->read;
-        is($actual, $expected, $message);
-        $rds->close;
-    }
+    my $mock = Test::MockObject::Extends->new('IO::Socket');
+    $mock->mock('syswrite',
+                sub {
+                    my ($self, $data) = (shift, shift);
+                    length($data);
+                });
+    $mock->mock('sysread',
+                sub {
+                    state $pos = 0;
+                    
+                    # args: self, $data, length
+                    $_[1] = substr($response, $pos, $_[2]);
+                    
+                    $pos += length($_[1]); # advance the cursor
+                    
+                    length($_[1]); # return the amount read
+                })
 }
 
-sub check_rds_variants {
+
+sub parse_rserve_eval {
     my ($file, $expected, $message) = @_;
 
-    subtest 'variants ' . $message => sub {
-        plan tests => (-f "$file-noxdr" ? 5 : 4);
-
-        check_rds($file . '-xdr',
-                  $expected, $message . ' - xdr');
-
-        check_rds($file . '-noxdr',
-                  $expected, $message . ' - binary') if (-f "$file-noxdr");
-
-        check_rds($file . '-xdr.rds',
-                  $expected, $message . ' - compressed xdr');
-
-        check_rds($file . '-xdr_bzip.rds',
-                  $expected, $message . ' - bzip compressed xdr');
+    my $filename = $file . '-xdr';
+    
+    subtest 'mock ' . $message => sub {
+        plan tests => 9;
         
-        like(exception {
-            Statistics::R::IO::RDS->new($file . '-xdr_xz.rds')->read
-             }, qr/xz-compressed R files are not supported/, $message . ' - xz');
+        my $mock = mock_rserve_response($filename);
+        my $rserve = Statistics::R::IO::Rserve->new(fh => $mock);
+        
+        is($rserve->ser_eval('testing, please ignore'),
+           $expected, $message);
+
+        my ($request, $args) = $mock->next_call();
+        
+        is($request,
+           'syswrite', 'send request');
+        
+        my ($command, $length, $offset, $length_hi) =
+            unpack('V4', $args->[1]);
+        is($command,
+           0xf5, 'request CMD_serEval');
+        is($length+16,
+           length($args->[1]), 'request length');
+        is($offset,
+           0, 'request offset');
+        is($length_hi,
+           0, 'request hi-length');
+        
+        is($mock->next_call(),
+           'sysread', 'read response status');
+        is($mock->next_call(),
+           'sysread', 'read response data');
+        is($mock->next_call(),
+           undef, 'last call');
     }
 }
 
 
+## integer vectors
 ## serialize 1:3, XDR: true
-check_rds_variants('t/data/noatt-123l',
-     Statistics::R::REXP::Integer->new([ 1, 2, 3 ]),
-     'int vector no atts');
+parse_rserve_eval('t/data/noatt-123l',
+                  Statistics::R::REXP::Integer->new([ 1, 2, 3 ]),
+                  'int vector no atts');
 
 ## serialize a=1L, b=2L, c=3L, XDR: true
-check_rds_variants('t/data/abc-123l',
+parse_rserve_eval('t/data/abc-123l',
    Statistics::R::REXP::Integer->new(
        elements => [ 1, 2, 3 ],
        attributes => {
@@ -75,12 +97,12 @@ check_rds_variants('t/data/abc-123l',
 
 ## double vectors
 ## serialize 1234.56, XDR: true
-check_rds_variants('t/data/noatt-123456',
+parse_rserve_eval('t/data/noatt-123456',
    Statistics::R::REXP::Double->new([ 1234.56 ]),
    'double vector no atts');
 
 ## serialize foo=1234.56, XDR: true
-check_rds_variants('t/data/foo-123456',
+parse_rserve_eval('t/data/foo-123456',
    Statistics::R::REXP::Double->new(
        elements => [ 1234.56 ],
        attributes => {
@@ -91,12 +113,12 @@ check_rds_variants('t/data/foo-123456',
 
 ## character vectors
 ## serialize letters[1:3], XDR: true
-check_rds_variants('t/data/noatt-abc',
+parse_rserve_eval('t/data/noatt-abc',
    Statistics::R::REXP::Character->new([ 'a', 'b', 'c' ]),
    'character vector no atts');
 
 ## serialize A='a', B='b', C='c', XDR: true
-check_rds_variants('t/data/ABC-abc',
+parse_rserve_eval('t/data/ABC-abc',
    Statistics::R::REXP::Character->new(
        elements => [ 'a', 'b', 'c' ],
        attributes => {
@@ -107,14 +129,14 @@ check_rds_variants('t/data/ABC-abc',
 
 ## raw vectors
 ## serialize as.raw(c(1:3, 255, 0), XDR: true
-check_rds_variants('t/data/noatt-raw',
+parse_rserve_eval('t/data/noatt-raw',
    Statistics::R::REXP::Raw->new([ 1, 2, 3, 255, 0 ]),
    'raw vector');
 
 
 ## list (i.e., generic vector)
 ## serialize list(1:3, list('a', 'b', 11), 'foo'), XDR: true
-check_rds_variants('t/data/noatt-list',
+parse_rserve_eval('t/data/noatt-list',
    Statistics::R::REXP::List->new([
        Statistics::R::REXP::Integer->new([ 1, 2, 3]),
        Statistics::R::REXP::List->new([
@@ -125,7 +147,7 @@ check_rds_variants('t/data/noatt-list',
    'generic vector no atts');
 
 ## serialize list(foo=1:3, list('a', 'b', 11), bar='foo'), XDR: true
-check_rds_variants('t/data/foobar-list',
+parse_rserve_eval('t/data/foobar-list',
    Statistics::R::REXP::List->new(
        elements => [
            Statistics::R::REXP::Integer->new([ 1, 2, 3]),
@@ -143,7 +165,7 @@ check_rds_variants('t/data/foobar-list',
 ## matrix
 
 ## serialize matrix(-1:4, 2, 3), XDR: true
-check_rds_variants('t/data/noatt-mat',
+parse_rserve_eval('t/data/noatt-mat',
    Statistics::R::REXP::Integer->new(
        elements => [ -1, 0, 1, 2, 3, 4 ],
        attributes => {
@@ -152,7 +174,7 @@ check_rds_variants('t/data/noatt-mat',
    'int matrix no atts');
 
 ## serialize matrix(-1:4, 2, 3, dimnames=list(c('a', 'b'))), XDR: true
-check_rds_variants('t/data/ab-mat',
+parse_rserve_eval('t/data/ab-mat',
    Statistics::R::REXP::Integer->new(
        elements => [ -1, 0, 1, 2, 3, 4 ],
        attributes => {
@@ -167,7 +189,7 @@ check_rds_variants('t/data/ab-mat',
 
 ## data frames
 ## serialize head(cars)
-check_rds_variants('t/data/cars',
+parse_rserve_eval('t/data/cars',
    Statistics::R::REXP::List->new(
        elements => [
            Statistics::R::REXP::Double->new([ 4, 4, 7, 7, 8, 9]),
@@ -183,7 +205,7 @@ check_rds_variants('t/data/cars',
    'the cars data frame');
 
 ## serialize head(mtcars)
-check_rds_variants('t/data/mtcars',
+parse_rserve_eval('t/data/mtcars',
    Statistics::R::REXP::List->new(
        elements => [
            Statistics::R::REXP::Double->new([ 21.0, 21.0, 22.8, 21.4, 18.7, 18.1 ]),
@@ -211,7 +233,7 @@ check_rds_variants('t/data/mtcars',
    'the mtcars data frame');
 
 ## serialize head(iris)
-check_rds_variants('t/data/iris',
+parse_rserve_eval('t/data/iris',
    Statistics::R::REXP::List->new(
        elements => [
            Statistics::R::REXP::Double->new([ 5.1, 4.9, 4.7, 4.6, 5.0, 5.4 ]),
@@ -239,31 +261,31 @@ check_rds_variants('t/data/iris',
 
 
 ## Call lm(mpg ~ wt, data = head(mtcars))
-check_rds_variants('t/data/lang-lm-mpgwt',
-                   Statistics::R::REXP::Language->new(
-                       elements => [
-                           Statistics::R::REXP::Symbol->new('lm'),
-                           Statistics::R::REXP::Language->new(
-                               elements => [
-                                   Statistics::R::REXP::Symbol->new('~'),
-                                   Statistics::R::REXP::Symbol->new('mpg'),
-                                   Statistics::R::REXP::Symbol->new('wt'),
-                               ]),
-                           Statistics::R::REXP::Language->new(
-                               elements => [
-                                   Statistics::R::REXP::Symbol->new('head'),
-                                   Statistics::R::REXP::Symbol->new('mtcars'),
-                               ]),
-                       ],
-                       attributes => {
-                           names => Statistics::R::REXP::Character->new([
-                               '', 'formula', 'data' ])
-                       }),
-                   'language lm(mpg~wt, head(mtcars))');
+parse_rserve_eval('t/data/lang-lm-mpgwt',
+                  Statistics::R::REXP::Language->new(
+                      elements => [
+                          Statistics::R::REXP::Symbol->new('lm'),
+                          Statistics::R::REXP::Language->new(
+                              elements => [
+                                  Statistics::R::REXP::Symbol->new('~'),
+                                  Statistics::R::REXP::Symbol->new('mpg'),
+                                  Statistics::R::REXP::Symbol->new('wt'),
+                              ]),
+                          Statistics::R::REXP::Language->new(
+                              elements => [
+                                  Statistics::R::REXP::Symbol->new('head'),
+                                  Statistics::R::REXP::Symbol->new('mtcars'),
+                              ]),
+                      ],
+                      attributes => {
+                          names => Statistics::R::REXP::Character->new([
+                              '', 'formula', 'data' ])
+                      }),
+                  'language lm(mpg~wt, head(mtcars))');
 
 
 ## serialize lm(mpg ~ wt, data = head(mtcars))
-check_rds_variants('t/data/mtcars-lm-mpgwt',
+parse_rserve_eval('t/data/mtcars-lm-mpgwt',
    Statistics::R::REXP::List->new(
        elements => [
            # coefficients
@@ -485,18 +507,22 @@ check_rds_variants('t/data/mtcars-lm-mpgwt',
    'lm mpg~wt, head(mtcars)');
 
 
-## opening a non-existent file
-like(exception {
-    Statistics::R::IO::RDS->new('foobard')
-     }, qr/No such file 'foobard'/, 'new on non-existent file');
+## Server error
+my $error_mock = Test::MockObject::Extends->new('IO::Handle');
+$error_mock->mock('syswrite',
+                  sub {
+                      my ($self, $data) = (shift, shift);
+                      length($data);
+                  });
+$error_mock->mock('sysread',
+                  sub {
+                      # args: self, $data, length
+                      $_[1] = pack('VVA*', 123, 0, "\0"x8);
+                      0
+                  });
+my $rserve = Statistics::R::IO::Rserve->new(fh => $error_mock);
 
-## bad arguments to new
 like(exception {
-    Statistics::R::IO::RDS->new
-     }, qr/Missing required arguments: fh/, 'new with no args');
-like(exception {
-    Statistics::R::IO::RDS->new([])
-     }, qr/Single parameters to new/, 'new with array ref');
-like(exception {
-    Statistics::R::IO::RDS->new(fh => [])
-     }, qr/'fh' must be a file handle/, 'bad fh');
+    $rserve->ser_eval('testing, please ignore')
+     }, qr/Server returned an error: 123/,
+    'server error');
