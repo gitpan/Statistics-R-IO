@@ -1,6 +1,6 @@
 package Statistics::R::IO::Base;
 # ABSTRACT: Common object methods for processing R files
-$Statistics::R::IO::Base::VERSION = '0.08';
+$Statistics::R::IO::Base::VERSION = '0.09';
 use 5.012;
 
 use IO::File;
@@ -106,7 +106,7 @@ Statistics::R::IO::Base - Common object methods for processing R files
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 

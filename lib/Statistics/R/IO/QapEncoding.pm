@@ -1,6 +1,6 @@
 package Statistics::R::IO::QapEncoding;
 # ABSTRACT: Functions for parsing Rserve packets
-$Statistics::R::IO::QapEncoding::VERSION = '0.08';
+$Statistics::R::IO::QapEncoding::VERSION = '0.09';
 use 5.012;
 
 use strict;
@@ -484,7 +484,7 @@ Statistics::R::IO::QapEncoding - Functions for parsing Rserve packets
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 

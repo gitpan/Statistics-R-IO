@@ -1,6 +1,6 @@
 package Statistics::R::REXP::List;
 # ABSTRACT: an R generic vector (list)
-$Statistics::R::REXP::List::VERSION = '0.08';
+$Statistics::R::REXP::List::VERSION = '0.09';
 use 5.012;
 
 use Scalar::Util qw(weaken);
@@ -66,7 +66,7 @@ Statistics::R::REXP::List - an R generic vector (list)
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 

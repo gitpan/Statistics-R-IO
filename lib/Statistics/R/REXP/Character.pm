@@ -1,6 +1,6 @@
 package Statistics::R::REXP::Character;
 # ABSTRACT: an R character vector
-$Statistics::R::REXP::Character::VERSION = '0.08';
+$Statistics::R::REXP::Character::VERSION = '0.09';
 use 5.012;
 
 use Scalar::Util qw(looks_like_number);
@@ -35,7 +35,7 @@ Statistics::R::REXP::Character - an R character vector
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 

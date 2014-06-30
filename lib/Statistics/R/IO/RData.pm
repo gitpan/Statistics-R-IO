@@ -1,6 +1,6 @@
 package Statistics::R::IO::RData;
 # ABSTRACT: Supply object methods for RData files
-$Statistics::R::IO::RData::VERSION = '0.08';
+$Statistics::R::IO::RData::VERSION = '0.09';
 use 5.012;
 
 use Moose;
@@ -46,7 +46,7 @@ Statistics::R::IO::RData - Supply object methods for RData files
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 
